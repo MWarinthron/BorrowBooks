@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 export default function Register() {
   const navigate = useNavigate();
   const [isLogin, setIsLogin] = useState(false);
-  const [name, setName] = useState(""); // เพิ่มชื่อ
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -29,10 +29,8 @@ export default function Register() {
     }
 
     try {
-      // เชื่อมต่อ API (TODO: ใช้ fetch หรือ axios)
       const url = "http://localhost:5000/api/auth/register";
-      const body = { name, email, password }; // ส่งชื่อไปเมื่อสมัครสมาชิก
-
+      const body = { name, email, password };
       const res = await fetch(url, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -52,7 +50,7 @@ export default function Register() {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-blue-50">
+    <div className="flex items-center justify-center min-h-screen bg-gradient-to-b from-blue-200 to-blue-400">
       <div className="w-full max-w-md p-6 bg-white rounded-lg shadow-lg">
         <h2 className="text-2xl font-semibold text-center text-blue-600">
           {"สมัครสมาชิก"}

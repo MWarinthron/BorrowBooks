@@ -17,16 +17,16 @@ const seedDatabase = async () => {
     // เพิ่มผู้ใช้ตัวอย่าง
     await pool.query(`
       INSERT INTO users (name, email, password) VALUES 
-      ('Alice', 'alice@example.com', 'hashedpassword1'),
-      ('Bob', 'bob@example.com', 'hashedpassword2');
+      ('Test', 'Test@gmail.com', '1234'),
+      ('Admin', 'Admin@gmail.com', '1234');
     `);
 
     // เพิ่มหนังสือตัวอย่าง
     await pool.query(`
-      INSERT INTO books (title, author, category, available) VALUES 
-      ('Clean Code', 'Robert C. Martin', 'Programming', true),
-      ('The Pragmatic Programmer', 'Andy Hunt', 'Programming', true),
-      ('Harry Potter and the Sorcerer''s Stone', 'J.K. Rowling', 'Fantasy', true);
+      INSERT INTO books (title, author, category, available, image) VALUES 
+      ('One Piece', 'Eiichiro Oda', 'manga', true, '/assets/images/OnePiece.jpg'),
+      ('1984', 'George Orwell', 'recommend', true, '/assets/images/1984.jpg'),
+      ('Spider-Man: The Ultimate Collection', 'Stan Lee and Steve Ditko', 'recommend', true, '/assets/images/Spider-Man.jpg');
     `);
 
     console.log("Seeding complete!");

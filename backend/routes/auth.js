@@ -6,7 +6,7 @@ import authMiddleware from "../middleware/auth.js";
 
 const router = express.Router();
 
-// สมัครสมาชิก
+
 router.post("/register", async (req, res) => {
   const { name, email, password } = req.body;
   try {
@@ -21,7 +21,7 @@ router.post("/register", async (req, res) => {
   }
 });
 
-// เข้าสู่ระบบ
+
 router.post("/login", async (req, res) => {
   const { email, password } = req.body;
   try {
@@ -38,7 +38,7 @@ router.post("/login", async (req, res) => {
   }
 });
 
-// ดึงข้อมูลผู้ใช้
+
 router.get("/me", authMiddleware, async (req, res) => {
   try {
     const user = await pool.query("SELECT id, email, name, role FROM users WHERE id = $1", [req.user.id]);
@@ -48,7 +48,6 @@ router.get("/me", authMiddleware, async (req, res) => {
   }
 });
 
-// ดึงข้อมูลหนังสือที่ผู้ใช้ยืมมา
 router.get("/my-books", authMiddleware, async (req, res) => {
   try {
     const borrowedBooks = await pool.query(

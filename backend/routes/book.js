@@ -4,10 +4,19 @@ import authMiddleware from "../middleware/auth.js";
 
 const router = express.Router();
 
-// ดึงรายการหนังสือทั้งหมด
+
 router.get("/", async (req, res) => {
   try {
     const books = await pool.query("SELECT * FROM books where available = true");
+    res.json(books.rows);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
+
+router.get("/borrowed", async (req, res) => {
+  try {
+    const books = await pool.query("SELECT * FROM books where available = false");
     res.json(books.rows);
   } catch (err) {
     res.status(500).json({ message: err.message });
@@ -23,7 +32,6 @@ router.get("/:book_id", async (req, res) => {
   }
 });
 
-// เพิ่มหนังสือ (Admin)
 router.post("/add", authMiddleware, async (req, res) => {
   const { title, author, image,  categories} = req.body;
   try {
@@ -37,7 +45,7 @@ router.post("/add", authMiddleware, async (req, res) => {
   }
 });
 
-// ลบหนังสือ (Admin)
+
 router.delete("/delete/:id", authMiddleware, async (req, res) => {
   try {
     await pool.query("UPDATE books SET available = false WHERE id = $1", [req.params.id]);

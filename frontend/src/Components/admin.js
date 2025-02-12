@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { MdLibraryBooks, MdAdd, MdDelete, MdHome, MdLogout } from "react-icons/md";
-import { Link } from "react-router-dom";
+import { MdAdd, MdDelete, MdLogout } from "react-icons/md";
 import Input from "../Components/ui/Input";
 import Button from "../Components/ui/Button";
 import { useNavigate } from "react-router-dom";
@@ -33,7 +32,6 @@ const Admin = () => {
         }
     };
 
-    // อัปโหลดรูปภาพ
     const handleFileUpload = async (event) => {
         const file = event.target.files[0];
         if (!file) return;
@@ -50,7 +48,7 @@ const Admin = () => {
             if (!response.ok) throw new Error("Failed to upload image");
 
             const data = await response.json();
-            setNewBook({ ...newBook, image: `/Assets/images/${data.filename}` }); // ตั้งค่า path รูปภาพ
+            setNewBook({ ...newBook, image: `/Assets/images/${data.filename}` }); 
         } catch (err) {
             console.error("Upload Error:", err.message);
         }
@@ -82,7 +80,6 @@ const Admin = () => {
         }
     };
 
-    // ลบหนังสือ
     const handleDeleteBook = async (bookId) => {
         if (!window.confirm("คุณแน่ใจหรือไม่ว่าต้องการลบหนังสือเล่มนี้?")) return;
 
@@ -105,10 +102,15 @@ const Admin = () => {
         navigate("/login");
     };
 
+    const goToBorrwedbooks=() =>{
+        navigate("/Borrowed");
+    }
+
     return (
         <div className="min-h-screen bg-blue-100 p-6">
             <div className="flex justify-between items-center bg-cyan-300 p-4 shadow-md rounded-lg">
                 <h1 className="text-xl font-bold ">Admin</h1>
+                <Button variant="destructive" onClick={()=>goToBorrwedbooks()}>Borrowed</Button>
                 <Button variant="destructive" onClick={() => handleLogout()}>
                     <MdLogout className="inline-block mr-2 text-xl " />
                     Logout
@@ -166,7 +168,6 @@ const Admin = () => {
                             <h3 className="text-lg font-semibold text-gray-800">{book.title}</h3>
                             <p className="text-sm text-gray-500 mb-4">{book.author}</p>
 
-                            {/* ใช้ margin-top `mt-auto` เพื่อดันปุ่มไปด้านล่าง */}
                             <Button
                                 onClick={() => handleDeleteBook(book.id)}
                                 className="mt-auto w-full bg-red-500 hover:bg-red-600 text-white"

@@ -4,7 +4,7 @@ import authMiddleware from "../middleware/auth.js";
 
 const router = express.Router();
 
-// ยืมหนังสือ
+
 router.post("/:book_id", authMiddleware, async (req, res) => {
   try {
     const { borrow_date, return_date } = req.body;
@@ -24,7 +24,6 @@ router.post("/:book_id", authMiddleware, async (req, res) => {
   }
 });
 
-// คืนหนังสือ
 router.post("/return/:book_id", authMiddleware, async (req, res) => {
   try {
     const borrow = await pool.query(
@@ -47,18 +46,17 @@ router.post("/return/:book_id", authMiddleware, async (req, res) => {
 });
 
 
-// ลบหนังสือ
 router.delete("/book/:book_id", authMiddleware, async (req, res) => {
   try {
     const { book_id } = req.params;
 
-    // ตรวจสอบว่าหนังสือมีอยู่หรือไม่
+ 
     const book = await pool.query("SELECT * FROM books WHERE id = $1", [book_id]);
     if (book.rows.length === 0) {
       return res.status(404).json({ message: "ไม่พบหนังสือที่ต้องการลบ" });
     }
 
-    // ตรวจสอบว่าหนังสือถูกยืมหรือไม่
+    
     const borrowCheck = await pool.query(
       "SELECT * FROM borrowings WHERE book_id = $1 AND status = false",
       [book_id]
@@ -67,7 +65,7 @@ router.delete("/book/:book_id", authMiddleware, async (req, res) => {
       return res.status(400).json({ message: "ไม่สามารถลบหนังสือที่กำลังถูกยืมได้" });
     }
 
-    // ลบหนังสือออกจากฐานข้อมูล
+   
     await pool.query("DELETE FROM books WHERE id = $1", [book_id]);
 
     res.json({ message: "ลบหนังสือสำเร็จ" });

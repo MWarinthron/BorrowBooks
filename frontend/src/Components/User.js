@@ -4,7 +4,7 @@ import Input from "../Components/ui/Input";
 import Button from "./ui/Button";
 import { Link } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
-import { MdHome, MdPerson, MdLogout, MdOutlineReplay } from "react-icons/md"; // ใช้ Material Icons
+import { MdHome, MdPerson, MdLogout, MdOutlineReplay } from "react-icons/md";
 const User = () => {
     const navigate = useNavigate();
     const token = localStorage.getItem("token");
@@ -45,11 +45,11 @@ const User = () => {
             setUser(data);
         } catch (err) {
             if (error.response && error.response.status === 401) {
-                // ถ้าได้รับ error 401 (Unauthorized) แสดงว่า token หมดอายุ
-                localStorage.removeItem("token"); // ลบ token ออกจาก localStorage
-                navigate("/login") // นำทางไปหน้า login
+                
+                localStorage.removeItem("token"); 
+                navigate("/login") 
             } else {
-                // จัดการกับ error อื่นๆ
+              
                 console.error(error);
             }
         }
@@ -72,11 +72,11 @@ const User = () => {
             setBorrowedBooks(data);
         } catch (err) {
             if (error.response && error.response.status === 401) {
-                // ถ้าได้รับ error 401 (Unauthorized) แสดงว่า token หมดอายุ
-                localStorage.removeItem("token"); // ลบ token ออกจาก localStorage
-                navigate("/login") // นำทางไปหน้า login
+               
+                localStorage.removeItem("token");
+                navigate("/login") 
             } else {
-                // จัดการกับ error อื่นๆ
+               
                 console.error(error);
             }
         }
@@ -103,11 +103,11 @@ const User = () => {
             setBorrowedBooks((prevBooks) => prevBooks.filter((book) => book.id !== bookId));
         } catch (err) {
             if (error.response && error.response.status === 401) {
-                // ถ้าได้รับ error 401 (Unauthorized) แสดงว่า token หมดอายุ
-                localStorage.removeItem("token"); // ลบ token ออกจาก localStorage
-                navigate("/login") // นำทางไปหน้า login
+              
+                localStorage.removeItem("token"); 
+                navigate("/login") 
             } else {
-                // จัดการกับ error อื่นๆ
+                
                 alert("ไม่สามารถคืนหนังสือได้: " + err.message);
             }
         }
@@ -142,7 +142,7 @@ const User = () => {
 
     return (
         <div className="min-h-screen bg-gradient-to-b from-blue-200 to-blue-400 p-6">
-            {/* Navbar */}
+            
             <div className="flex justify-between items-center bg-white p-4 shadow-md rounded-lg">
                 <div className="flex items-center gap-4">
                     <Link to="/">

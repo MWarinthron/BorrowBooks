@@ -8,7 +8,7 @@ import { jwtDecode } from "jwt-decode";
 const BorrowPage = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const { bookId } = location.state || {}; // รับ bookId จากหน้า Home
+  const { bookId } = location.state || {}; 
   
   const [borrowDate, setBorrowDate] = useState(null);
   const [returnDate, setReturnDate] = useState(null);
@@ -19,20 +19,19 @@ const BorrowPage = () => {
    useEffect(() => {
   
       if (token) {
-        const decodedToken = jwtDecode(token); // ถอดรหัส token
-        const currentTime = Date.now() / 1000; // เวลาในวินาที
+        const decodedToken = jwtDecode(token); 
+        const currentTime = Date.now() / 1000; 
   
         if (decodedToken.exp < currentTime) {
-          // ถ้า token หมดอายุ
-          localStorage.removeItem("token"); // ลบ token ออกจาก localStorage
-          navigate("/login"); // นำทางไปหน้า login
+          localStorage.removeItem("token"); 
+          navigate("/login"); 
         } else {
             if (bookId) {
                 fetchBookDetails();
             }
         }
       } else {
-        navigate("/login"); // ถ้าไม่มี token นำทางไปหน้า login
+        navigate("/login"); 
       }
     }, [token, navigate, bookId]);
   
@@ -87,7 +86,7 @@ const BorrowPage = () => {
       if (!response.ok) throw new Error(result.message);
 
       alert(result.message);
-      navigate("/"); // กลับไปหน้า Home หลังยืนยันสำเร็จ
+      navigate("/"); 
     } catch (error) {
       console.error(error);
     }
