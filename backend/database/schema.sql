@@ -15,7 +15,7 @@ CREATE TABLE books (
     image VARCHAR(255)
 );
 
-CREATE TABLE borrowingss (
+CREATE TABLE borrowings (
     id SERIAL PRIMARY KEY,
     user_id INTEGER NOT NULL,
     book_id INTEGER NOT NULL,
