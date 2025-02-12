@@ -1,29 +1,37 @@
-require("dotenv").config();
-const { Pool } = require("pg");
+import pkg from "pg";
+import dotenv from "dotenv";
+import bcrypt from "bcryptjs";
+
+dotenv.config();
+
+const { Pool } = pkg;
 
 const pool = new Pool({
-  connectionString: process.env.DATABASE_URL, // ใช้ .env เพื่อเก็บคีย์เชื่อมต่อ
+  user: process.env.DB_USER,
+  host: process.env.DB_HOST,
+  database: process.env.DB_NAME,
+  password: process.env.DB_PASSWORD,
+  port: process.env.DB_PORT || 5432,
 });
 
 const seedDatabase = async () => {
   try {
     console.log("Seeding database...");
+    const hashedPassword = await bcrypt.hash('1234', 10);
+    await pool.query(
+      `
+      INSERT INTO users (name, email, password, role) VALUES 
+      ($1, $2, $3, $4),
+      ($5, $6, $7, $8);
+      `,
+      [
+        "Test1", "Test1@gmail.com", hashedPassword, "user",
+        "Admin1", "Admin1@gmail.com", hashedPassword, "admin"
+      ]
+    );
 
-    // ล้างข้อมูลเก่าออกก่อน
-    await pool.query("DELETE FROM borrow_records;");
-    await pool.query("DELETE FROM books;");
-    await pool.query("DELETE FROM users;");
-    
-    // เพิ่มผู้ใช้ตัวอย่าง
     await pool.query(`
-      INSERT INTO users (name, email, password) VALUES 
-      ('Test', 'Test@gmail.com', '1234'),
-      ('Admin', 'Admin@gmail.com', '1234');
-    `);
-
-    // เพิ่มหนังสือตัวอย่าง
-    await pool.query(`
-      INSERT INTO books (title, author, category, available, image) VALUES 
+      INSERT INTO books (title, author, categories, available, image) VALUES 
       ('One Piece', 'Eiichiro Oda', 'manga', true, '/assets/images/OnePiece.jpg'),
       ('1984', 'George Orwell', 'recommend', true, '/assets/images/1984.jpg'),
       ('Spider-Man: The Ultimate Collection', 'Stan Lee and Steve Ditko', 'recommend', true, '/assets/images/Spider-Man.jpg');
