@@ -1,6 +1,9 @@
 import pkg from "pg";
 import dotenv from "dotenv";
 import bcrypt from "bcryptjs";
+import path from "path";;
+import { fileURLToPath } from "url";
+import fs from "fs";
 
 dotenv.config();
 
@@ -16,6 +19,13 @@ const pool = new Pool({
 
 const seedDatabase = async () => {
   try {
+    console.log("Creating schema...");
+    const __filename = fileURLToPath(import.meta.url);
+    const __dirname = path.dirname(__filename);
+    const schemaPath = path.join(__dirname, "database", "schema.sql");
+    const schemaSQL = fs.readFileSync(schemaPath, "utf-8");
+    await pool.query(schemaSQL);
+
     console.log("Seeding database...");
     const hashedPassword = await bcrypt.hash('1234', 10);
     await pool.query(

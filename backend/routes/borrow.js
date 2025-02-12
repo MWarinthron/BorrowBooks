@@ -45,33 +45,4 @@ router.post("/return/:book_id", authMiddleware, async (req, res) => {
   }
 });
 
-
-router.delete("/book/:book_id", authMiddleware, async (req, res) => {
-  try {
-    const { book_id } = req.params;
-
- 
-    const book = await pool.query("SELECT * FROM books WHERE id = $1", [book_id]);
-    if (book.rows.length === 0) {
-      return res.status(404).json({ message: "ไม่พบหนังสือที่ต้องการลบ" });
-    }
-
-    
-    const borrowCheck = await pool.query(
-      "SELECT * FROM borrowings WHERE book_id = $1 AND status = false",
-      [book_id]
-    );
-    if (borrowCheck.rows.length > 0) {
-      return res.status(400).json({ message: "ไม่สามารถลบหนังสือที่กำลังถูกยืมได้" });
-    }
-
-   
-    await pool.query("DELETE FROM books WHERE id = $1", [book_id]);
-
-    res.json({ message: "ลบหนังสือสำเร็จ" });
-  } catch (err) {
-    res.status(500).json({ message: err.message });
-  }
-});
-
 export default router;
